@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Edward\\Desktop\\\u6DF1\u5EA6\u5B78\u7FD2\\train1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E661CB7A-6CFE-4176-986F-E91FD53052EE}|train1.pyproj|C:\\Users\\Edward\\Desktop\\\u6DF1\u5EA6\u5B78\u7FD2\\train1\\train1.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{E661CB7A-6CFE-4176-986F-E91FD53052EE}|train1.pyproj|solutionrelative:train1.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "train1.py",
+              "DocumentMoniker": "C:\\Users\\Edward\\Desktop\\\u6DF1\u5EA6\u5B78\u7FD2\\train1\\train1.py",
+              "RelativeDocumentMoniker": "train1.py",
+              "ToolTip": "C:\\Users\\Edward\\Desktop\\\u6DF1\u5EA6\u5B78\u7FD2\\train1\\train1.py",
+              "RelativeToolTip": "train1.py",
+              "ViewState": "AgIAAOABAAAAAAAAAAAgwOYBAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2025-11-15T02:05:18.783Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

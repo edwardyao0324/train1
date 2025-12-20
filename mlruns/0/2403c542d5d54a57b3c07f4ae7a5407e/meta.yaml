@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/Edward/Desktop/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92/train1/mlruns/0/2403c542d5d54a57b3c07f4ae7a5407e/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 2403c542d5d54a57b3c07f4ae7a5407e
+run_name: capable-auk-759
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763205355700
+status: 1
+tags: []
+user_id: Edward
