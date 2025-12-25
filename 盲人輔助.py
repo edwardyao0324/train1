@@ -45,7 +45,6 @@ def tts_worker():
 threading.Thread(target=tts_worker, daemon=True).start()
 
 def tts_play_nonblocking(text: str):
-    """把文字放到 queue，由背景線程完整朗讀"""
     if text.strip():
         tts_queue.put(text)
         
@@ -96,7 +95,6 @@ PORT = 7860
 HAS_CUDA = torch.cuda.is_available()
 DEVICE = "cuda" if HAS_CUDA else "cpu"
 AUTO_CAPTURE_INTERVAL = 3.0  # 自動拍照間隔（秒）
-SHUTTER_PRI_PATH = r"C:\Users\Edward\Desktop\Deep\train1\tts_files\快門聲.MP3"
 
 os.makedirs("captures", exist_ok=True)
 
@@ -150,7 +148,7 @@ def normalize_image(img: Image.Image, max_side: int = 1280) -> Image.Image:
         img = img.resize((int(w*scale), int(h*scale)), Image.LANCZOS)
     return img
 
-# ---------------- Lazy load Qwen3 ----------------
+# ---------------- Lazy load ----------------
 def lazy_load_qwen_bg():
     global model, processor, tokenizer, MODEL_READY, model_loading
 
@@ -285,7 +283,7 @@ def detect_language(text):
     return "en" if a / max(len(text), 1) > 0.6 else "zh"
 
 # ----------------------------------------------------
-#               Qwen3-VL 推論核心（整合版）
+#                推論核心（整合版）
 # ----------------------------------------------------
 
 def _build_messages(user_text: str, images: List[Image.Image], history: List[List[str]]):
@@ -561,7 +559,7 @@ def start_image_description(pil_image: Image.Image, source="(拍照)"):
 
     # ---------------- 播放生成音效（非阻塞） ----------------
     def play_generate_sound():
-        gen_sound_path = r"C:\Users\Edward\Desktop\Deep\train1\tts_files\生成.wav"
+        gen_sound_path = r"C:\Users\Edward\Desktop\Deep\train1\tts_files\生成.wav" #下載後路徑會變 要自己改
         if os.path.exists(gen_sound_path):
             try:
                 sound = pygame.mixer.Sound(gen_sound_path)
@@ -732,7 +730,7 @@ window.addEventListener('DOMContentLoaded', () => {
 @app.route('/debug_push', methods=['GET', 'POST'])
 def debug_push():
     with chat_lock:
-        chat_history.append(["(debug)", "🔥 這是一行測試文字"])
+        chat_history.append(["(debug)", "這是一行測試文字"])
     return "OK"
 
 @app.route('/auto_capture', methods=['POST'])
@@ -955,7 +953,7 @@ if __name__ == "__main__":
         print("[startup] 啟動背景模型載入...")
         threading.Thread(target=lazy_load_qwen_bg, daemon=True).start()
         print("[startup] 啟動 Flask 伺服器")
-        app.run(host="127.0.0.1", port=PORT, threaded=True, debug=False)
+        app.run(host="127.0.0.1", port=PORT, threaded=True, debug=False) #需要改成自己的IP
     finally:
         cap.release()
         hands.close()
