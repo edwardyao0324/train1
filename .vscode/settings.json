@@ -1,0 +1,6 @@
+{
+  "git.postCommitCommand": "push",
+  "git.useEditorAsCommitInput": false,
+  "git.enableSmartCommit": true,
+  "git.autofetch": false
+}
