@@ -522,7 +522,7 @@ def countdown_and_capture():
 def start_image_description(pil_image: Image.Image, source="(拍照)"):
     global is_generating
     with chat_lock:
-        chat_history.append([source, ""])
+        chat_history.append([source, ""])  # 先加一個空描述
 
     if not MODEL_READY:
         with chat_lock:
@@ -531,15 +531,29 @@ def start_image_description(pil_image: Image.Image, source="(拍照)"):
 
     is_generating = True
 
+    # ---------------- strip Markdown + 星號 ----------------
     def strip_markdown(text: str) -> str:
-        # 去掉 Markdown，合併換行
         text = text.replace("\n", " ")
-        text = re.sub(r'\*\*(.*?)\*\*', r'\1', text)
-        text = re.sub(r'\*(.*?)\*', r'\1', text)
-        text = re.sub(r'`(.*?)`', r'\1', text)
-        text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+        text = re.sub(r'\*\*(.*?)\*\*', r'\1', text)  # 粗體
+        text = re.sub(r'\*(.*?)\*', r'\1', text)      # 斜體
+        text = re.sub(r'`(.*?)`', r'\1', text)        # code
+        text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)  # 連結
+        text = re.sub(r'\*+', '', text)               # 清掉剩餘星號
         return text.strip()
-    
+
+    # ---------------- 播放生成音效（非阻塞） ----------------
+    def play_generate_sound():
+        gen_sound_path = r"C:\Users\Edward\Desktop\Deep\train1\tts_files\生成.wav"
+        if os.path.exists(gen_sound_path):
+            try:
+                sound = pygame.mixer.Sound(gen_sound_path)
+                sound.play()
+            except Exception as e:
+                print("[play_generate_sound error]", e)
+
+    threading.Thread(target=play_generate_sound, daemon=True).start()
+
+    # ---------------- 文字生成 worker ----------------
     def worker():
         global is_generating
         text_buf = ""
@@ -554,8 +568,19 @@ def start_image_description(pil_image: Image.Image, source="(拍照)"):
 
             # 更新文字框
             with chat_lock:
-                chat_history[-1][1] = text_buf
+                chat_history[-1][1] = text_buf.strip()
             update_latest_desc_from_chat()
+
+        # 生成結束後，把整段文字送到 TTS queue，一次播完
+        final_text = strip_markdown(text_buf.strip())  # 再次確保乾淨
+        tts_play_nonblocking(final_text)
+
+        # 最終更新文字框
+        with chat_lock:
+            chat_history[-1][1] = final_text
+        is_generating = False
+
+    threading.Thread(target=worker, daemon=True).start()
 
     # ---------------- 播放生成音效（非阻塞） ----------------
     def play_generate_sound():
